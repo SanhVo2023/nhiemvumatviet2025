@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221 83% 20%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 20%;
+    --radius: 0.5rem;
+
+    /* Mắt Việt custom colors */
+    --matviet-yellow: 49 100% 50%;
+    --matviet-navy: 221 83% 20%;
+    --matviet-navy-light: 221 70% 40%;
+    --matviet-gray: 220 14% 96%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.5% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes pulse-border {
+  0%,
+  100% {
+    border-color: rgba(255, 222, 89, 0.5);
+  }
+  50% {
+    border-color: rgba(255, 222, 89, 1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -100px;
+  }
+  40%,
+  100% {
+    background-position: 300px;
+  }
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: shine 3s infinite;
+}
+
+/* Voucher styles */
+.voucher {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.voucher-content {
+  position: relative;
+  z-index: 2;
+}
+
+.voucher::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: hsl(var(--matviet-navy));
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.voucher::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: hsl(var(--matviet-navy));
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.voucher-dash {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: repeating-linear-gradient(to right, transparent, transparent 4px, #eee 4px, #eee 8px);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* Progress bar animation */
+.progress-step-active .circle {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 222, 89, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 222, 89, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 222, 89, 0);
+  }
+}
+
+/* Mission card animation */
+.mission-card-completed {
+  animation: completedPulse 1s;
+}
+
+@keyframes completedPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 222, 89, 0.7);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Confetti animation enhancement */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}

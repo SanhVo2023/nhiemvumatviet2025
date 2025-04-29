@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80">
+  <!-- Eye symbol -->
+  <path d="M40 30 C40 30, 60 10, 80 30 C80 30, 60 50, 40 30" fill="#FFDE59"/>
+  <!-- Text -->
+  <text x="40" y="70" font-family="Arial" font-weight="bold" font-size="24" fill="#002169">MẮT VIỆT</text>
+  <text x="40" y="85" font-family="Arial" font-size="14" fill="#002169">EYE CARE</text>
+</svg> 
