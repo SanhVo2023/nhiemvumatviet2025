@@ -54,28 +54,28 @@ export default function MissionPage() {
       return {
         amount: "300.000đ",
         code: "MATVIET300K",
-        expiry: "30/06/2025",
+        expiry: "24h kể khi nhận voucher.",
         description: "Áp dụng cho đơn hàng từ 4.000.000đ khi mua kính mắt tại Mắt Việt",
       }
     } else if (completedMissions === 2) {
       return {
         amount: "150.000đ",
         code: "MATVIET150K",
-        expiry: "30/06/2025",
+        expiry: "24h kể khi nhận voucher.",
         description: "Áp dụng cho đơn hàng từ 3.000.000đ khi mua kính mắt tại Mắt Việt",
       }
     } else if (completedMissions === 1) {
       return {
         amount: "100.000đ",
         code: "MATVIET100K",
-        expiry: "30/06/2025",
+        expiry: "24h kể khi nhận voucher.",
         description: "Áp dụng cho đơn hàng từ 2.000.000đ khi mua kính mắt tại Mắt Việt",
       }
     } else {
       return {
         amount: "50.000đ",
         code: "MATVIET50K",
-        expiry: "30/06/2025",
+        expiry: "24h kể khi nhận voucher.",
         description: "Áp dụng cho đơn hàng từ 1.000.000đ khi mua kính mắt tại Mắt Việt",
       }
     }
@@ -463,7 +463,7 @@ export default function MissionPage() {
               }}
             >
               <div className="flex items-center justify-center">
-                <img src="/bonus.png" alt="Bonus" className="w-8 h-8 mr-2" />
+                <img src="/bonus.png" alt="Bonus" className="w-12 h-12 mr-2" />
                 <span className="font-bold">Nhận thêm khăn Mascot khi hoàn thành tất cả nhiệm vụ</span>
               </div>
             </motion.div>
