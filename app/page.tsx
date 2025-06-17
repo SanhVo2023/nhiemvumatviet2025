@@ -465,7 +465,7 @@ export default function MissionPage() {
             >
               <div className="flex items-center justify-center">
                 <img src="/bonus.png" alt="Bonus" className="w-12 h-12 mr-2" />
-                <span className="font-bold">Nhận thêm khăn Mascot khi hoàn thành tất cả nhiệm vụ</span>
+                <span className="font-bold">Nhận thêm Bộ nước rửa kính khi hoàn thành tất cả nhiệm vụ</span>
               </div>
             </motion.div>
 
@@ -627,7 +627,7 @@ export default function MissionPage() {
 
                 <div className="flex items-center mb-2">
                   <Check className="h-4 w-4 text-[#FFDE59] mr-1" />
-                  <span className="text-sm">Khăn Mascot Mắt Việt</span>
+                  <span className="text-sm">Bộ nước rửa kính Mắt Việt</span>
                 </div>
 
                 <div className="text-xs text-gray-500 mt-2 border-t pt-2">
