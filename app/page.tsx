@@ -363,81 +363,129 @@ export default function MissionPage() {
   // Hiển thị trang đăng ký
   if (currentPage === "form") {
     return (
-      <div className="min-h-screen bg-[#002169] flex flex-col items-center justify-center p-4">
-        {/* Banner at the top */}
-        <div className="w-full max-w-md mb-4">
-          <img
-            src="/banner.png"
-            alt="Mắt Việt Banner"
-            className="w-full h-auto rounded-lg shadow-lg"
-          />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+      <div className="min-h-screen gradient-bg flex flex-col items-center justify-center p-4">
+        {/* Enhanced Banner */}
+        <motion.div 
+          className="w-full max-w-md mb-6"
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="relative">
+            <img
+              src="/banner.png"
+              alt="Mắt Việt Banner"
+              className="w-full h-auto rounded-2xl shadow-2xl"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+          </div>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="w-full max-w-md"
         >
-          <Card className="p-6 shadow-lg border-0 bg-white">
-            <div className="text-center mb-6">
-              <p className="text-gray-600">Điền đầy đủ thông tin trước khi thực hiện nhiệm vụ của Mắt Việt nha.</p>
-            </div>
+          <div className="glass-card p-8 rounded-2xl shadow-2xl animate-slide-in-up">
+            <motion.div 
+              className="text-center mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="relative inline-block">
+                <h1 className="text-2xl font-bold text-[#002169] mb-2">🎯 Bắt đầu nhiệm vụ</h1>
+                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[#FFDE59] to-[#FFD700] rounded-full"></div>
+              </div>
+              <p className="text-gray-600 mt-4">Điền đầy đủ thông tin trước khi thực hiện nhiệm vụ của Mắt Việt nha.</p>
+            </motion.div>
 
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-[#002169]">
-                  Họ tên
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              <motion.div 
+                className="space-y-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <Label htmlFor="name" className="text-[#002169] font-semibold flex items-center">
+                  👤 Họ tên
                 </Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Nhập họ tên"
+                  placeholder="Nhập họ tên của bạn"
                   required
-                  className="border-gray-300 focus:border-[#FFDE59] focus:ring-[#FFDE59]"
+                  className="border-2 border-gray-200 focus:border-[#FFDE59] focus:ring-2 focus:ring-[#FFDE59]/20 rounded-xl h-12 px-4 transition-all duration-300 hover:border-[#FFDE59]/50"
                   value={customerData.name}
                   onChange={(e) => setCustomerData({ ...customerData, name: e.target.value })}
                 />
-              </div>
+              </motion.div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-[#002169]">
-                  Số điện thoại
+              <motion.div 
+                className="space-y-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <Label htmlFor="phone" className="text-[#002169] font-semibold flex items-center">
+                  📱 Số điện thoại
                 </Label>
                 <Input
                   id="phone"
                   type="tel"
                   placeholder="Nhập số điện thoại"
                   required
-                  className="border-gray-300 focus:border-[#FFDE59] focus:ring-[#FFDE59]"
+                  className="border-2 border-gray-200 focus:border-[#FFDE59] focus:ring-2 focus:ring-[#FFDE59]/20 rounded-xl h-12 px-4 transition-all duration-300 hover:border-[#FFDE59]/50"
                   value={customerData.phone}
                   onChange={(e) => setCustomerData({ ...customerData, phone: e.target.value })}
                 />
-              </div>
+              </motion.div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-[#002169]">
-                  Email
+              <motion.div 
+                className="space-y-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <Label htmlFor="email" className="text-[#002169] font-semibold flex items-center">
+                  ✉️ Email <span className="text-gray-400 text-sm ml-2">(tùy chọn)</span>
                 </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Nhập email"
-                  className="border-gray-300 focus:border-[#FFDE59] focus:ring-[#FFDE59]"
+                  placeholder="Nhập email (không bắt buộc)"
+                  className="border-2 border-gray-200 focus:border-[#FFDE59] focus:ring-2 focus:ring-[#FFDE59]/20 rounded-xl h-12 px-4 transition-all duration-300 hover:border-[#FFDE59]/50"
                   value={customerData.email}
                   onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })}
                 />
-              </div>
+              </motion.div>
 
-              <Button 
-                type="submit" 
-                disabled={isCheckingPhone}
-                className="w-full bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold"
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
               >
-                {isCheckingPhone ? "Đang kiểm tra..." : "Tiếp tục"} 
-                {!isCheckingPhone && <ChevronRight className="ml-1 h-4 w-4" />}
-              </Button>
+                <Button 
+                  type="submit" 
+                  disabled={isCheckingPhone}
+                  className="w-full reward-button text-[#002169] font-bold h-14 text-lg rounded-xl shadow-lg transition-all duration-300"
+                >
+                  {isCheckingPhone ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#002169] mr-2"></div>
+                      Đang kiểm tra...
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      🚀 Bắt đầu nhiệm vụ
+                      <ChevronRight className="ml-2 h-5 w-5" />
+                    </div>
+                  )}
+                </Button>
+              </motion.div>
             </form>
-          </Card>
+          </div>
         </motion.div>
 
         {/* Dialog for already completed mission */}
@@ -478,107 +526,168 @@ export default function MissionPage() {
   // Hiển thị trang nhiệm vụ
   if (currentPage === "mission") {
     return (
-      <div className="min-h-screen bg-[#002169] flex flex-col items-center p-4 pt-8">
+      <div className="min-h-screen gradient-bg flex flex-col items-center p-4 pt-8">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="w-full max-w-md"
         >
-          <Card className="p-6 shadow-lg border-0 bg-white">
-            {/* Logo */}
-            <div className="flex justify-center mb-4">
-              <img
-                src="/logo.png"
-                alt="Mắt Việt Logo"
-                className="h-10"
-              />
-            </div>
+          <div className="glass-card p-8 rounded-2xl shadow-2xl">
+            {/* Enhanced Logo */}
+            <motion.div 
+              className="flex justify-center mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="relative">
+                <img
+                  src="/logo.png"
+                  alt="Mắt Việt Logo"
+                  className="h-12 animate-float"
+                />
+                <div className="absolute -inset-3 bg-gradient-to-r from-[#FFDE59]/20 to-[#FFD700]/20 rounded-full blur-xl"></div>
+              </div>
+            </motion.div>
 
-            {/* Điểm số và tiến độ */}
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-bold text-[#002169] mb-2">
-                Nhiệm vụ đã hoàn thành{" "}
+            {/* Enhanced Progress Header */}
+            <motion.div 
+              className="text-center mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="relative inline-block mb-4">
+                <h2 className="text-2xl font-bold text-[#002169] mb-1">
+                  🏆 Tiến độ nhiệm vụ
+                </h2>
+                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[#FFDE59] to-[#FFD700] rounded-full"></div>
+              </div>
+              
+              <div className="flex items-center justify-center space-x-2 mb-4">
                 <motion.span
                   key={completedMissions}
-                  initial={{ scale: 1.5 }}
-                  animate={{ scale: 1 }}
-                  className="text-[#FFDE59] font-bold"
-                  style={{ textShadow: "0 0 5px rgba(255, 222, 89, 0.5)" }}
+                  initial={{ scale: 1.3, color: "#FFDE59" }}
+                  animate={{ scale: 1, color: "#002169" }}
+                  transition={{ duration: 0.5 }}
+                  className="text-3xl font-bold"
+                  style={{ textShadow: "0 0 10px rgba(255, 222, 89, 0.3)" }}
                 >
                   {completedMissions}
                 </motion.span>
-                /3
-              </h2>
+                <span className="text-xl text-gray-400">/</span>
+                <span className="text-xl font-semibold text-gray-600">3</span>
+                <span className="text-sm text-gray-500 ml-2">nhiệm vụ</span>
+              </div>
 
-              <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+              {/* Enhanced Progress Bar */}
+              <div className="relative h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                 <motion.div
-                  className={`h-full bg-[#FFDE59] rounded-full ${showProgressAnimation ? "shine-effect" : ""}`}
+                  className={`h-full bg-gradient-to-r from-[#FFDE59] via-[#FFD700] to-[#FFC107] rounded-full relative ${showProgressAnimation ? "shine-effect" : ""}`}
                   style={{ width: `${progressValue}%` }}
                   initial={{ width: "0%" }}
                   animate={{ width: `${progressValue}%` }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-white/20 rounded-full"></div>
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-full"></div>
+              </div>
+              
+              <div className="text-sm text-gray-500 mt-2">
+                {completedMissions === 0 && "Bắt đầu thực hiện nhiệm vụ đầu tiên! 🚀"}
+                {completedMissions === 1 && "Tuyệt vời! Tiếp tục thực hiện 2 nhiệm vụ còn lại! 💪"}
+                {completedMissions === 2 && "Sắp hoàn thành rồi! Chỉ còn 1 nhiệm vụ cuối! 🔥"}
+                {completedMissions === 3 && "Hoàn thành xuất sắc! Nhận thưởng ngay! 🎉"}
+              </div>
+            </motion.div>
+
+            {/* Enhanced Reward Progress */}
+            <motion.div 
+              className="mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="text-center mb-4">
+                <h3 className="font-bold text-[#002169] text-lg mb-1">🎁 Phần thưởng</h3>
+                <p className="text-sm text-gray-600">Hoàn thành nhiệm vụ để mở khóa voucher</p>
+              </div>
+              
+              <div className="flex justify-between items-center relative px-2">
+                {/* Enhanced connection line */}
+                <div className="absolute left-6 right-6 top-6 h-2 bg-gray-200 rounded-full"></div>
+                <motion.div 
+                  className="absolute left-6 top-6 h-2 bg-gradient-to-r from-[#FFDE59] to-[#FFD700] rounded-full"
+                  initial={{ width: "0%" }}
+                  animate={{ width: `${Math.max(0, (completedMissions - 0) / 3 * 100)}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  style={{ right: `${100 - Math.max(0, (completedMissions) / 3 * 100)}%` }}
                 />
+
+                {/* Enhanced reward circles */}
+                {[
+                  { missions: 0, amount: "50k", color: "from-blue-400 to-blue-600" },
+                  { missions: 1, amount: "100k", color: "from-purple-400 to-purple-600" },
+                  { missions: 2, amount: "150k", color: "from-pink-400 to-pink-600" },
+                  { missions: 3, amount: "300k", color: "from-yellow-400 to-orange-500" }
+                ].map((reward, index) => (
+                  <motion.div 
+                    key={index}
+                    className="relative flex flex-col items-center z-10"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.6 + index * 0.1 }}
+                  >
+                    <motion.div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center border-3 shadow-lg progress-circle ${
+                        completedMissions >= reward.missions 
+                          ? `bg-gradient-to-br ${reward.color} text-white border-white animate-glow` 
+                          : "bg-gray-200 text-gray-400 border-gray-300"
+                      }`}
+                      whileHover={{ scale: 1.1 }}
+                      animate={completedMissions >= reward.missions ? { 
+                        boxShadow: ["0 0 0 0 rgba(255, 222, 89, 0.7)", "0 0 0 10px rgba(255, 222, 89, 0)"] 
+                      } : {}}
+                      transition={{ duration: 1.5, repeat: completedMissions >= reward.missions ? Infinity : 0 }}
+                    >
+                      {completedMissions >= reward.missions ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 10 }}
+                        >
+                          <CheckCircle className="h-6 w-6" />
+                        </motion.div>
+                      ) : (
+                        <span className="text-sm font-bold">{index + 1}</span>
+                      )}
+                    </motion.div>
+                    <motion.div 
+                      className="text-center mt-2"
+                      animate={completedMissions >= reward.missions ? { scale: [1, 1.1, 1] } : {}}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <div className={`text-sm font-bold ${
+                        completedMissions >= reward.missions ? "text-[#002169]" : "text-gray-500"
+                      }`}>
+                        {reward.amount}
+                      </div>
+                      {completedMissions >= reward.missions && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-xs text-green-600 font-semibold"
+                        >
+                          ✓ Mở khóa
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  </motion.div>
+                ))}
               </div>
-            </div>
-
-            {/* Thanh tiến độ phần thưởng */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2 relative">
-                {/* Line background */}
-                <div className="absolute left-0 right-0 top-5 h-1.5 bg-gray-200"></div>
-                {/* Active line overlay */}
-                <div 
-                  className={`absolute left-0 top-5 h-1.5 bg-[#FFDE59] transition-all duration-500`} 
-                  style={{ width: `${(completedMissions / 3) * 100}%` }}
-                ></div>
-
-                {/* Reward bubbles */}
-                <div className="relative flex flex-col items-center z-10">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      completedMissions >= 0 ? "bg-[#FFDE59] text-[#002169] border-2 border-[#002169]" : "bg-gray-200"
-                    } circle`}
-                  >
-                    {completedMissions >= 0 ? <CheckCircle className="h-5 w-5" /> : "1"}
-                  </div>
-                  <span className="text-xs mt-1 font-bold">50k</span>
-                </div>
-
-                <div className="relative flex flex-col items-center z-10">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      completedMissions >= 1 ? "bg-[#FFDE59] text-[#002169] border-2 border-[#002169]" : "bg-gray-200"
-                    } circle`}
-                  >
-                    {completedMissions >= 1 ? <CheckCircle className="h-5 w-5" /> : "2"}
-                  </div>
-                  <span className="text-xs mt-1 font-bold">100k</span>
-                </div>
-
-                <div className="relative flex flex-col items-center z-10">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      completedMissions >= 2 ? "bg-[#FFDE59] text-[#002169] border-2 border-[#002169]" : "bg-gray-200"
-                    } circle`}
-                  >
-                    {completedMissions >= 2 ? <CheckCircle className="h-5 w-5" /> : "3"}
-                  </div>
-                  <span className="text-xs mt-1 font-bold">150k</span>
-                </div>
-
-                <div className="relative flex flex-col items-center z-10">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      completedMissions >= 3 ? "bg-[#FFDE59] text-[#002169] border-2 border-[#002169]" : "bg-gray-200"
-                    } circle`}
-                  >
-                    {completedMissions >= 3 ? <CheckCircle className="h-5 w-5" /> : "4"}
-                  </div>
-                  <span className="text-xs mt-1 font-bold">300k</span>
-                </div>
-              </div>
-            </div>
+            </motion.div>
 
             {/* Hộp phần thưởng đặc biệt - Hidden as requested */}
             {/* <motion.div
@@ -606,51 +715,120 @@ export default function MissionPage() {
               </div>
             </motion.div> */}
 
-            {/* Danh sách nhiệm vụ */}
-            <div className="space-y-4 mb-6">
-              <MissionCard
-                title="Theo dõi Zalo Mắt Việt"
-                status={missionStatus.zalo}
-                onClick={handleZaloClick}
-                isRecentlyCompleted={recentlyCompletedMission === "zalo"}
-              />
+            {/* Enhanced Mission List */}
+            <motion.div 
+              className="space-y-6 mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <div className="text-center mb-6">
+                <h3 className="font-bold text-[#002169] text-lg mb-1">📋 Danh sách nhiệm vụ</h3>
+                <p className="text-sm text-gray-600">Hoàn thành tất cả để nhận voucher cao nhất</p>
+              </div>
 
-              <MissionCard
-                title="Theo dõi Facebook Mắt Việt"
-                status={missionStatus.shopee}
-                onClick={handleFacebookClick}
-                isRecentlyCompleted={recentlyCompletedMission === "shopee"}
-              />
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <MissionCard
+                  title="Theo dõi Zalo Mắt Việt"
+                  status={missionStatus.zalo}
+                  onClick={handleZaloClick}
+                  isRecentlyCompleted={recentlyCompletedMission === "zalo"}
+                />
+              </motion.div>
 
-              <MissionCard
-                title="Review Google cho Mắt Việt"
-                status={missionStatus.review}
-                onClick={handleReviewClick}
-                isRecentlyCompleted={recentlyCompletedMission === "review"}
-              />
-            </div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 }}
+              >
+                <MissionCard
+                  title="Theo dõi Facebook Mắt Việt"
+                  status={missionStatus.shopee}
+                  onClick={handleFacebookClick}
+                  isRecentlyCompleted={recentlyCompletedMission === "shopee"}
+                />
+              </motion.div>
 
-            {/* Nút nhận thưởng */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.9 }}
+              >
+                <MissionCard
+                  title="Review Google cho Mắt Việt"
+                  status={missionStatus.review}
+                  onClick={handleReviewClick}
+                  isRecentlyCompleted={recentlyCompletedMission === "review"}
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Enhanced Reward Button */}
             {completedMissions > 0 && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <motion.div 
+                initial={{ opacity: 0, y: 20, scale: 0.9 }} 
+                animate={{ opacity: 1, y: 0, scale: 1 }} 
+                transition={{ delay: 1, type: "spring", stiffness: 300, damping: 20 }}
+                className="relative"
+              >
                 {completedMissions === 3 ? (
-                  <ConfettiButton
-                    onClick={handleRewardClick}
-                    className="w-full bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold py-4 text-lg rounded-xl"
-                  >
-                    <span className="text-xl">Nhận thưởng</span>
-                  </ConfettiButton>
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 rounded-2xl blur opacity-75 animate-pulse"></div>
+                    <ConfettiButton
+                      onClick={handleRewardClick}
+                      className="relative w-full reward-button text-[#002169] font-bold py-6 text-xl rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300"
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <span className="text-2xl animate-bounce">🎉</span>
+                        <span>Nhận thưởng ngay!</span>
+                        <span className="text-2xl animate-bounce">🎁</span>
+                      </div>
+                    </ConfettiButton>
+                  </div>
                 ) : (
                   <Button
                     onClick={handleRewardClick}
-                    className="w-full bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold py-4 text-lg rounded-xl"
+                    className="w-full reward-button text-[#002169] font-bold py-5 text-lg rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300"
                   >
-                    <span className="text-xl">Nhận thưởng</span>
+                    <div className="flex items-center justify-center space-x-2">
+                      <span className="text-xl">🎁</span>
+                      <span>Nhận thưởng ({completedMissions}/3)</span>
+                    </div>
                   </Button>
+                )}
+                
+                {/* Floating particles effect for completed state */}
+                {completedMissions === 3 && (
+                  <div className="absolute inset-0 pointer-events-none">
+                    {[...Array(6)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 bg-yellow-400 rounded-full"
+                        style={{
+                          left: `${20 + i * 12}%`,
+                          top: "50%",
+                        }}
+                        animate={{
+                          y: [-10, -30, -10],
+                          opacity: [0, 1, 0],
+                          scale: [0, 1, 0],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          delay: i * 0.2,
+                        }}
+                      />
+                    ))}
+                  </div>
                 )}
               </motion.div>
             )}
-          </Card>
+          </div>
         </motion.div>
       </div>
     )
@@ -828,8 +1006,8 @@ interface MissionCardProps {
 
 function MissionCard({ title, status, onClick, isRecentlyCompleted = false }: MissionCardProps) {
   // Xác định nội dung nút dựa trên trạng thái
-  let buttonText = "Làm ngay"
-  let buttonClass = "bg-[#002169] hover:bg-[#003399] text-white"
+  let buttonText = "🚀 Làm ngay"
+  let buttonClass = "bg-[#002169] hover:bg-[#003399] text-white font-semibold px-6 py-2 rounded-xl transition-all duration-300 hover:shadow-lg"
   const [isLoading, setIsLoading] = useState(false)
 
   // Auto-click timer for "Kiểm tra" button
@@ -845,50 +1023,107 @@ function MissionCard({ title, status, onClick, isRecentlyCompleted = false }: Mi
     }
   }, [status, onClick])
 
+  // Mission icons based on title
+  const getMissionIcon = () => {
+    if (title.includes("Zalo")) return "💬"
+    if (title.includes("Facebook")) return "👥"
+    if (title.includes("Review") || title.includes("Google")) return "⭐"
+    return "🎯"
+  }
+
   if (status === 1) {
-    buttonText = "Kiểm tra"
-    buttonClass = "bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold"
+    buttonText = "🔍 Kiểm tra"
+    buttonClass = "reward-button text-[#002169] font-bold px-6 py-2 rounded-xl"
   } else if (status === 2) {
-    buttonText = "Hoàn thành"
-    buttonClass = "bg-gray-200 text-[#002169] cursor-default border border-[#002169]"
+    buttonText = "✅ Hoàn thành"
+    buttonClass = "bg-gradient-to-r from-green-100 to-green-200 text-green-800 cursor-default border-2 border-green-300 font-bold px-6 py-2 rounded-xl"
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{
         opacity: 1,
         y: 0,
-        scale: isRecentlyCompleted ? [1, 1.05, 1] : 1,
-        boxShadow: isRecentlyCompleted
-          ? ["0 0 0 rgba(255, 222, 89, 0)", "0 0 20px rgba(255, 222, 89, 0.7)", "0 0 0 rgba(255, 222, 89, 0)"]
-          : "none",
+        scale: isRecentlyCompleted ? [1, 1.02, 1] : 1,
       }}
       transition={{
-        duration: isRecentlyCompleted ? 0.5 : 0.3,
-        repeat: isRecentlyCompleted ? 1 : 0,
+        duration: 0.4,
+        ease: "easeOut",
+        repeat: isRecentlyCompleted ? 2 : 0,
       }}
-      className={`flex items-center justify-between p-4 border rounded-lg ${
-        status === 2 ? "bg-gradient-to-r from-white to-gray-50 border-[#002169]" : "bg-white border-gray-200"
-      } ${isRecentlyCompleted ? "mission-card-completed" : ""}`}
+      className={`mission-card p-6 rounded-2xl shadow-lg ${
+        status === 2 ? "mission-card-completed sparkle-effect" : ""
+      } ${isRecentlyCompleted ? "animate-bounce-in" : ""}`}
     >
-      <div className="font-medium flex items-center">
-        {status === 2 && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 500, damping: 10 }}
-            className="mr-2 text-[#FFDE59]"
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <div className={`text-3xl ${status === 2 ? "animate-bounce" : ""}`}>
+            {getMissionIcon()}
+          </div>
+          <div>
+            <h3 className={`font-bold text-lg ${status === 2 ? "text-[#002169]" : "text-gray-800"}`}>
+              {title}
+            </h3>
+            <div className="flex items-center mt-1">
+              {status === 0 && (
+                <span className="text-sm text-gray-500 flex items-center">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                  Chưa bắt đầu
+                </span>
+              )}
+              {status === 1 && (
+                <span className="text-sm text-orange-600 flex items-center">
+                  <div className="w-2 h-2 bg-orange-400 rounded-full mr-2 animate-pulse"></div>
+                  Đang kiểm tra...
+                </span>
+              )}
+              {status === 2 && (
+                <motion.span 
+                  className="text-sm text-green-600 flex items-center font-semibold"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                  Đã hoàn thành
+                </motion.span>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        <motion.div
+          whileHover={{ scale: status < 2 ? 1.05 : 1 }}
+          whileTap={{ scale: status < 2 ? 0.95 : 1 }}
+        >
+          <Button 
+            onClick={status < 2 ? onClick : undefined} 
+            className={buttonClass} 
+            disabled={status === 2 || isLoading}
           >
-            <CheckCircle className="h-5 w-5" />
-          </motion.div>
-        )}
-        <span className={status === 2 ? "text-[#002169] font-bold" : ""}>{title}</span>
+            {buttonText}
+          </Button>
+        </motion.div>
       </div>
-      <Button onClick={status < 2 ? onClick : undefined} className={buttonClass} disabled={status === 2 || isLoading}>
-        {status === 2 && <CheckCircle className="mr-1 h-4 w-4" />}
-        {buttonText}
-      </Button>
+      
+      {/* Progress indicator */}
+      <div className="mt-4">
+        <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+          <motion.div
+            className={`h-full rounded-full ${
+              status === 0 ? "bg-gray-300" : 
+              status === 1 ? "bg-orange-400" : 
+              "bg-green-500"
+            }`}
+            initial={{ width: "0%" }}
+            animate={{ 
+              width: status === 0 ? "0%" : status === 1 ? "50%" : "100%" 
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
+        </div>
+      </div>
     </motion.div>
   )
 }

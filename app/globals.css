@@ -95,12 +95,77 @@
   }
 }
 
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 222, 89, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 222, 89, 0.6);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
 .animate-pulse-border {
   animation: pulse-border 2s infinite;
 }
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}
+
+.animate-sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
 }
 
 .shine-effect {
@@ -197,6 +262,151 @@
 /* Mission card animation */
 .mission-card-completed {
   animation: completedPulse 1s;
+}
+
+/* Enhanced backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, 
+    hsl(var(--matviet-navy)) 0%, 
+    hsl(221, 70%, 25%) 50%, 
+    hsl(var(--matviet-navy)) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 222, 89, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 222, 89, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 33, 105, 0.1),
+    0 4px 16px rgba(0, 33, 105, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.mission-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(0, 33, 105, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 222, 89, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.mission-card:hover::before {
+  left: 100%;
+}
+
+.mission-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 33, 105, 0.15),
+    0 6px 20px rgba(0, 33, 105, 0.1);
+  border-color: rgba(255, 222, 89, 0.3);
+}
+
+.mission-card-completed {
+  background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 100%);
+  border-color: rgba(255, 222, 89, 0.5);
+  animation: completedPulse 1s, glow 2s ease-in-out infinite;
+}
+
+.reward-button {
+  background: linear-gradient(135deg, #FFDE59 0%, #FFD700 50%, #FFC107 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 15px rgba(255, 222, 89, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.reward-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s;
+}
+
+.reward-button:hover::before {
+  left: 100%;
+}
+
+.reward-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 20px rgba(255, 222, 89, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.progress-circle {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-circle.active {
+  animation: pulse 2s infinite, glow 2s ease-in-out infinite;
+}
+
+.voucher-enhanced {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.voucher-enhanced::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(135deg, #FFDE59, #FFD700, #FFC107);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+}
+
+.sparkle-effect {
+  position: relative;
+}
+
+.sparkle-effect::after {
+  content: '✨';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 12px;
+  animation: sparkle 2s ease-in-out infinite;
 }
 
 @keyframes completedPulse {
