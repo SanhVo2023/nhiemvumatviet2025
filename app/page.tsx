@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import confetti from "canvas-confetti"
 import { ConfettiButton } from "@/components/confetti-button"
 
@@ -25,6 +26,10 @@ interface VoucherInfo {
   code: string
   expiry: string
   description: string
+}
+
+interface AllVouchersInfo {
+  vouchers: VoucherInfo[]
 }
 
 export default function MissionPage() {
@@ -47,37 +52,115 @@ export default function MissionPage() {
   const [recentlyCompletedMission, setRecentlyCompletedMission] = useState<string | null>(null)
   const [progressValue, setProgressValue] = useState(0)
   const [showProgressAnimation, setShowProgressAnimation] = useState(false)
+  const [isCheckingPhone, setIsCheckingPhone] = useState(false)
+  const [showAlreadyCompletedPopup, setShowAlreadyCompletedPopup] = useState(false)
+  const [phoneAlreadyExists, setPhoneAlreadyExists] = useState(false)
 
-  // Voucher information based on completed missions
-  const getVoucherInfo = (): VoucherInfo => {
-    if (completedMissions === 3) {
-      return {
-        amount: "300.000đ",
-        code: "MATVIET300K",
-        expiry: "24h kể khi nhận voucher.",
-        description: "Áp dụng cho đơn hàng từ 4.000.000đ khi mua kính mắt tại Mắt Việt",
-      }
-    } else if (completedMissions === 2) {
-      return {
-        amount: "150.000đ",
-        code: "MATVIET150K",
-        expiry: "24h kể khi nhận voucher.",
-        description: "Áp dụng cho đơn hàng từ 3.000.000đ khi mua kính mắt tại Mắt Việt",
-      }
-    } else if (completedMissions === 1) {
-      return {
-        amount: "100.000đ",
-        code: "MATVIET100K",
-        expiry: "24h kể khi nhận voucher.",
-        description: "Áp dụng cho đơn hàng từ 2.000.000đ khi mua kính mắt tại Mắt Việt",
-      }
-    } else {
-      return {
+  // Voucher information based on completed missions (cumulative)
+  const getAllVouchersInfo = (): AllVouchersInfo => {
+    const vouchers: VoucherInfo[] = []
+    
+    // Add vouchers cumulatively based on completed missions
+    if (completedMissions >= 0) {
+      vouchers.push({
         amount: "50.000đ",
         code: "MATVIET50K",
         expiry: "24h kể khi nhận voucher.",
         description: "Áp dụng cho đơn hàng từ 1.000.000đ khi mua kính mắt tại Mắt Việt",
+      })
+    }
+    
+    if (completedMissions >= 1) {
+      vouchers.push({
+        amount: "100.000đ",
+        code: "MATVIET100K",
+        expiry: "24h kể khi nhận voucher.",
+        description: "Áp dụng cho đơn hàng từ 2.000.000đ khi mua kính mắt tại Mắt Việt",
+      })
+    }
+    
+    if (completedMissions >= 2) {
+      vouchers.push({
+        amount: "150.000đ",
+        code: "MATVIET150K",
+        expiry: "24h kể khi nhận voucher.",
+        description: "Áp dụng cho đơn hàng từ 3.000.000đ khi mua kính mắt tại Mắt Việt",
+      })
+    }
+    
+    if (completedMissions >= 3) {
+      vouchers.push({
+        amount: "300.000đ",
+        code: "MATVIET300K",
+        expiry: "24h kể khi nhận voucher.",
+        description: "Áp dụng cho đơn hàng từ 4.000.000đ khi mua kính mắt tại Mắt Việt",
+      })
+    }
+    
+    return { vouchers }
+  }
+
+  // Keep single voucher function for backward compatibility
+  const getVoucherInfo = (): VoucherInfo => {
+    const allVouchers = getAllVouchersInfo()
+    return allVouchers.vouchers[allVouchers.vouchers.length - 1] || {
+      amount: "50.000đ",
+      code: "MATVIET50K",
+      expiry: "24h kể khi nhận voucher.",
+      description: "Áp dụng cho đơn hàng từ 1.000.000đ khi mua kính mắt tại Mắt Việt",
+    }
+  }
+
+  // Function to check if phone number already exists in Google Sheets
+  const checkPhoneInGoogleSheets = async (phoneNumber: string): Promise<boolean> => {
+    try {
+      // Using the published Google Sheets web URL
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT93YL10Rs5_31bpVM-2Gw-WtlgVJn-YbLCe31X6BM7XzfOSsSM-TDFM8uw7RoAZldjNkRDmumPvdwj/pubhtml?gid=423231860&single=true"
+      
+      const response = await fetch(sheetUrl, {
+        mode: 'cors',
+        headers: {
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        }
+      })
+      
+      if (!response.ok) {
+        console.warn('Could not check Google Sheets, proceeding with mission')
+        return false
       }
+      
+      const htmlText = await response.text()
+      
+      // Parse the HTML table to extract phone numbers and status
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(htmlText, 'text/html')
+      const rows = doc.querySelectorAll('table tr')
+      
+      // Clean input phone number for comparison
+      const cleanInputPhone = phoneNumber.replace(/[\s\-\(\)\+]/g, '')
+      
+      // Check each row (skip header row)
+      for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].querySelectorAll('td')
+        if (cells.length >= 6) {
+          // Column structure: Dấu thời gian, Họ Và Tên, Số Điện Thoại, Email, Voucher, Status
+          const phoneInSheet = cells[2]?.textContent?.trim() || '' // Column C (Số Điện Thoại)
+          const status = cells[5]?.textContent?.trim() || '' // Column F (Status)
+          
+          // Clean phone number from sheet for comparison
+          const cleanPhoneInSheet = phoneInSheet.replace(/[\s\-\(\)\+]/g, '')
+          
+          // Check if phone matches and status is "Sent"
+          if (cleanPhoneInSheet === cleanInputPhone && status.toLowerCase() === 'sent') {
+            return true // Phone number exists and SMS has been sent
+          }
+        }
+      }
+      
+      return false
+    } catch (error) {
+      console.warn('Error checking Google Sheets:', error)
+      return false // If there's an error, allow the user to proceed
     }
   }
 
@@ -118,8 +201,26 @@ export default function MissionPage() {
   }, [completedMissions])
 
   // Xử lý form đăng ký
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Check for dev mode bypass
+    const urlParams = new URLSearchParams(window.location.search)
+    const isDevMode = urlParams.has('dev')
+    
+    // Check if phone number already exists in Google Sheets (skip in dev mode)
+    if (customerData.phone && !isDevMode) {
+      setIsCheckingPhone(true)
+      const phoneExists = await checkPhoneInGoogleSheets(customerData.phone)
+      setIsCheckingPhone(false)
+      
+      if (phoneExists) {
+        setPhoneAlreadyExists(true)
+        setShowAlreadyCompletedPopup(true)
+        return
+      }
+    }
+    
     setCurrentPage("mission")
   }
 
@@ -321,19 +422,55 @@ export default function MissionPage() {
                   id="email"
                   type="email"
                   placeholder="Nhập email"
-                  required
                   className="border-gray-300 focus:border-[#FFDE59] focus:ring-[#FFDE59]"
                   value={customerData.email}
                   onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })}
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold">
-                Tiếp tục <ChevronRight className="ml-1 h-4 w-4" />
+              <Button 
+                type="submit" 
+                disabled={isCheckingPhone}
+                className="w-full bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold"
+              >
+                {isCheckingPhone ? "Đang kiểm tra..." : "Tiếp tục"} 
+                {!isCheckingPhone && <ChevronRight className="ml-1 h-4 w-4" />}
               </Button>
             </form>
           </Card>
         </motion.div>
+
+        {/* Dialog for already completed mission */}
+        <Dialog open={showAlreadyCompletedPopup} onOpenChange={setShowAlreadyCompletedPopup}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-[#002169]">Thông báo</DialogTitle>
+            </DialogHeader>
+            <div className="text-center py-4">
+              <div className="mb-4">
+                <img
+                  src="/logo.png"
+                  alt="Mắt Việt Logo"
+                  className="h-8 mx-auto mb-2"
+                />
+              </div>
+              <DialogDescription>
+                Số điện thoại này đã tham gia và nhận thưởng từ chương trình trước đó. 
+                Mỗi số điện thoại chỉ có thể tham gia một lần duy nhất.
+              </DialogDescription>
+              <br />
+              <strong className="text-[#002169]">Cảm ơn bạn đã ủng hộ Mắt Việt!</strong>
+            </div>
+            <div className="flex justify-center">
+              <Button 
+                onClick={() => setShowAlreadyCompletedPopup(false)}
+                className="bg-[#FFDE59] hover:bg-[#FFD700] text-[#002169] font-bold"
+              >
+                Đã hiểu
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     )
   }
@@ -443,8 +580,8 @@ export default function MissionPage() {
               </div>
             </div>
 
-            {/* Hộp phần thưởng đặc biệt */}
-            <motion.div
+            {/* Hộp phần thưởng đặc biệt - Hidden as requested */}
+            {/* <motion.div
               className={`p-4 rounded-lg text-center mb-6 font-medium ${
                 completedMissions >= 3
                   ? "bg-[#FFDE59] text-[#002169] border-2 border-[#002169]"
@@ -467,7 +604,7 @@ export default function MissionPage() {
                 <img src="/bonus.png" alt="Bonus" className="w-12 h-12 mr-2" />
                 <span className="font-bold">Nhận thêm Bộ nước rửa kính khi hoàn thành tất cả nhiệm vụ</span>
               </div>
-            </motion.div>
+            </motion.div> */}
 
             {/* Danh sách nhiệm vụ */}
             <div className="space-y-4 mb-6">
@@ -577,40 +714,62 @@ export default function MissionPage() {
             Bạn đã hoàn thành nhiệm vụ và nhận được phần thưởng. Cảm ơn bạn đã tham gia cùng Mắt Việt!
           </p>
 
-          {/* Voucher section */}
+          {/* Voucher section - All earned vouchers */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             className="mb-6"
           >
-            <div className="voucher mb-4 border-2 border-[#002169]">
-              <div className="voucher-dash"></div>
-              <div className="voucher-content">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex items-center">
-                    <Gift className="h-5 w-5 text-[#002169] mr-2" />
-                    <h3 className="font-bold text-[#002169]">Voucher Mắt Việt</h3>
+            <div className="mb-4">
+              <h3 className="font-bold text-[#002169] mb-3 text-center">Các voucher bạn đã nhận được</h3>
+            </div>
+            
+            {getAllVouchersInfo().vouchers.map((voucher, index) => (
+              <motion.div
+                key={voucher.code}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 + index * 0.2 }}
+                className="voucher mb-3 border-2 border-[#002169]"
+              >
+                <div className="voucher-dash"></div>
+                <div className="voucher-content">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center">
+                      <Gift className="h-5 w-5 text-[#002169] mr-2" />
+                      <h4 className="font-bold text-[#002169]">Voucher Mắt Việt</h4>
+                    </div>
+                    <div className="px-2 py-1 bg-[#FFDE59] rounded text-xs font-bold text-[#002169]">
+                      {voucher.amount}
+                    </div>
                   </div>
-                  <div className="px-2 py-1 bg-[#FFDE59] rounded text-xs font-bold text-[#002169]">
-                    {getVoucherInfo().amount}
+
+                  <div className="flex items-center text-sm text-gray-600 mb-2">
+                    <Clock className="h-4 w-4 mr-1" />
+                    <span>Hạn sử dụng: {voucher.expiry}</span>
                   </div>
-                </div>
 
-                <div className="flex items-center text-sm text-gray-600 mb-2">
-                  <Clock className="h-4 w-4 mr-1" />
-                  <span>Hạn sử dụng: {getVoucherInfo().expiry}</span>
-                </div>
 
-                <div className="text-sm text-gray-600 mb-2">
-                  <span>Mã voucher sẽ được gửi đến điện thoại của bạn</span>
-                </div>
 
-                <div className="text-xs text-gray-500 mt-2 border-t pt-2">{getVoucherInfo().description}</div>
+                  <div className="text-xs text-gray-500 mt-2 border-t pt-2">{voucher.description}</div>
+                </div>
+              </motion.div>
+            ))}
+            
+            <div className="text-center text-sm text-gray-600 mt-4 p-4 bg-gradient-to-r from-blue-50 to-yellow-50 rounded-lg border border-[#FFDE59]">
+              <div className="mb-2">
+                <strong className="text-[#002169]">🎉 Chúc mừng! Bạn nhận được tất cả các voucher trên!</strong>
+              </div>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p>• <strong>Một mã voucher duy nhất</strong> sẽ được gửi qua SMS đến số điện thoại của bạn</p>
+                <p>• Bạn có thể <strong>sử dụng mã này cho bất kỳ voucher nào</strong> trong danh sách trên</p>
+                <p>• <strong>Chỉ được sử dụng một voucher</strong> cho mỗi lần mua hàng</p>
               </div>
             </div>
 
-            {completedMissions === 3 && (
+            {/* Special bonus reward hidden as requested */}
+            {/* {completedMissions === 3 && (
               <motion.div
                 className="voucher border-2 border-[#FFDE59]"
                 initial={{ opacity: 0 }}
@@ -634,7 +793,7 @@ export default function MissionPage() {
                   Quý khách vui lòng đến cửa hàng Mắt Việt gần nhất để nhận phần thưởng đặc biệt
                 </div>
               </motion.div>
-            )}
+            )} */}
           </motion.div>
 
           <div className="flex flex-col space-y-3">
