@@ -81,7 +81,7 @@ export default function MissionPage() {
     
     if (completedMissions >= 2) {
       vouchers.push({
-        amount: "150.000đ",
+        amount: "200.000đ",
         code: "MATVIET150K",
         expiry: "24h kể khi nhận voucher.",
         description: "Áp dụng cho đơn hàng từ 3.000.000đ khi mua kính mắt tại Mắt Việt",
@@ -618,7 +618,7 @@ export default function MissionPage() {
                   {[
                     { missions: 0, amount: "50K" },
                     { missions: 1, amount: "100K" },
-                    { missions: 2, amount: "150K" },
+                  { missions: 2, amount: "200K" },
                     { missions: 3, amount: "300K" }
                   ].map((reward, index) => (
                     <div 
@@ -709,12 +709,12 @@ export default function MissionPage() {
                   transition={{ delay: 0.7 }}
                 >
                   <MissionCard
-                    title="Follow Zalo"
-                    status={missionStatus.zalo}
-                    onClick={handleZaloClick}
-                    isRecentlyCompleted={recentlyCompletedMission === "zalo"}
-                    platformLogo="/Zalo (2).png"
-                    platformName="Zalo"
+                    title="Review Google"
+                    status={missionStatus.review}
+                    onClick={handleReviewClick}
+                    isRecentlyCompleted={recentlyCompletedMission === "review"}
+                    platformLogo="/Google map.png"
+                    platformName="Google"
                     missionNumber={1}
                   />
                 </motion.div>
@@ -725,12 +725,12 @@ export default function MissionPage() {
                   transition={{ delay: 0.8 }}
                 >
                   <MissionCard
-                    title="Follow Facebook"
-                    status={missionStatus.shopee}
-                    onClick={handleFacebookClick}
-                    isRecentlyCompleted={recentlyCompletedMission === "shopee"}
-                    platformLogo="/Facebook.png"
-                    platformName="Facebook"
+                    title="Follow Zalo"
+                    status={missionStatus.zalo}
+                    onClick={handleZaloClick}
+                    isRecentlyCompleted={recentlyCompletedMission === "zalo"}
+                    platformLogo="/Zalo (2).png"
+                    platformName="Zalo"
                     missionNumber={2}
                   />
                 </motion.div>
@@ -741,12 +741,12 @@ export default function MissionPage() {
                   transition={{ delay: 0.9 }}
                 >
                   <MissionCard
-                    title="Review Google"
-                    status={missionStatus.review}
-                    onClick={handleReviewClick}
-                    isRecentlyCompleted={recentlyCompletedMission === "review"}
-                    platformLogo="/Google map.png"
-                    platformName="Google"
+                    title="Follow Facebook"
+                    status={missionStatus.shopee}
+                    onClick={handleFacebookClick}
+                    isRecentlyCompleted={recentlyCompletedMission === "shopee"}
+                    platformLogo="/Facebook.png"
+                    platformName="Facebook"
                     missionNumber={3}
                   />
                 </motion.div>
