@@ -3,8 +3,9 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { motion } from "framer-motion"
-import { CheckCircle, ChevronRight, Award, Zap, Gift, Clock, Tag, Star, Check } from "lucide-react"
+import { CheckCircle, ChevronRight, Award, Zap, Gift, Clock, Tag, Star, Check, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -363,7 +364,17 @@ export default function MissionPage() {
   // Hiển thị trang đăng ký
   if (currentPage === "form") {
     return (
-      <div className="min-h-screen bg-[#002169] flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-[#002169] flex flex-col items-center justify-center p-4 relative">
+        {/* Q/A Link Button */}
+        <div className="absolute top-4 right-4 z-10">
+          <Link href="/qa">
+             <Button variant="ghost" className="text-white hover:text-[#FFDE59] hover:bg-white/10 gap-2">
+               <HelpCircle className="h-6 w-6" />
+               <span className="font-semibold">Hỏi đáp</span>
+             </Button>
+          </Link>
+        </div>
+
         {/* Your Custom Banner - Nicely Integrated */}
         <motion.div 
           className="w-full max-w-md mb-6"
@@ -576,7 +587,17 @@ export default function MissionPage() {
   // Hiển thị trang nhiệm vụ
   if (currentPage === "mission") {
     return (
-      <div className="min-h-screen bg-[#002169] flex flex-col items-center p-4 pt-8">
+      <div className="min-h-screen bg-[#002169] flex flex-col items-center p-4 pt-8 relative">
+        {/* Q/A Link Button */}
+        <div className="absolute top-4 right-4 z-10">
+          <Link href="/qa">
+             <Button variant="ghost" className="text-white hover:text-[#FFDE59] hover:bg-white/10 gap-2">
+               <HelpCircle className="h-6 w-6" />
+               <span className="font-semibold">Hỏi đáp</span>
+             </Button>
+          </Link>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
