@@ -285,7 +285,9 @@ export default function MissionPage() {
       "104": "https://g.page/r/CfPYNTk81GmnEBM/review",
       "228": "https://g.page/r/CVaXwqKV7UzREBM/review",
       "117":"https://g.page/r/CbDbwVIMB2kdEBM/review",
-      "305": "https://g.page/r/CYekIWkz4sinEBM/review"
+      "305": "https://g.page/r/CYekIWkz4sinEBM/review",
+      "230": "https://g.page/r/CQmQ8_PEKn95EBM/review",
+      "118": "https://g.page/r/CZ9X2En2cbLKEBM/review"
     }
 
     const reviewLink =
@@ -969,17 +971,34 @@ function MissionCard({ title, status, onClick, isRecentlyCompleted = false, plat
   let buttonText = "Làm ngay"
   let buttonClass = "bg-[#002169] hover:bg-[#003399] text-white font-semibold px-6 py-2 rounded-xl transition-all duration-300 hover:shadow-lg"
   const [isLoading, setIsLoading] = useState(false)
+  const [countdown, setCountdown] = useState(3)
 
-  // Auto-click timer for "Kiểm tra" button
+  // Auto-click timer for "Kiểm tra" button with countdown
   useEffect(() => {
     let timer: NodeJS.Timeout
+    let countdownInterval: NodeJS.Timeout
+
     if (status === 1) { // When status is "Kiểm tra"
+      setCountdown(3)
+
+      // Countdown interval
+      countdownInterval = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownInterval)
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+
       timer = setTimeout(() => {
         onClick()
       }, 3000)
     }
     return () => {
       if (timer) clearTimeout(timer)
+      if (countdownInterval) clearInterval(countdownInterval)
     }
   }, [status, onClick])
 
@@ -1057,15 +1076,51 @@ function MissionCard({ title, status, onClick, isRecentlyCompleted = false, plat
         {/* Button or Status */}
         <div className="ml-3">
           {status === 2 ? (
-            <CheckCircle className="w-5 h-5 text-green-500" />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <CheckCircle className="w-6 h-6 text-green-500" />
+            </motion.div>
+          ) : status === 1 ? (
+            <div className="flex items-center gap-2">
+              <div className="relative w-8 h-8">
+                <svg className="w-8 h-8 transform -rotate-90">
+                  <circle
+                    cx="16"
+                    cy="16"
+                    r="14"
+                    stroke="#e5e7eb"
+                    strokeWidth="3"
+                    fill="none"
+                  />
+                  <motion.circle
+                    cx="16"
+                    cy="16"
+                    r="14"
+                    stroke="#FFDE59"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeLinecap="round"
+                    initial={{ strokeDasharray: "88", strokeDashoffset: "0" }}
+                    animate={{ strokeDashoffset: "88" }}
+                    transition={{ duration: 3, ease: "linear" }}
+                  />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#002169]">
+                  {countdown}
+                </span>
+              </div>
+            </div>
           ) : (
-            <Button 
-              onClick={onClick} 
+            <Button
+              onClick={onClick}
               className={buttonClass}
-              disabled={status === 1 || isLoading}
+              disabled={isLoading}
               size="sm"
             >
-              {status === 1 ? "..." : "Làm"}
+              Làm
             </Button>
           )}
         </div>
