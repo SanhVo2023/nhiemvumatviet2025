@@ -1,32 +1,52 @@
 import type React from "react"
+import type { Viewport } from "next"
 import "./globals.css"
-import { Inter } from "next/font/google"
-import { ThemeProvider } from "@/components/theme-provider"
+import { Anton, Be_Vietnam_Pro, Pacifico } from "next/font/google"
 
-const inter = Inter({ subsets: ["latin"] })
+const display = Anton({
+  weight: "400",
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+const body = Be_Vietnam_Pro({
+  weight: ["400", "500", "600", "700", "800"],
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-body",
+  display: "swap",
+})
+
+const script = Pacifico({
+  weight: "400",
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-script",
+  display: "swap",
+})
 
 export const metadata = {
-  title: "Nhiệm Vụ Mắt Việt - Nhận Voucher Đến 300K",
-  description: "Hoàn thành 3 nhiệm vụ đơn giản và nhận voucher giảm giá đến 300.000đ khi mua kính mắt tại Mắt Việt",
+  title: "Chinh Phục Nhiệm Vụ – Rinh Voucher Khủng | Mắt Việt",
+  description:
+    "Theo dõi Mắt Việt trên Instagram, Facebook và Zalo Mini App để nhận voucher đến 300.000đ khi mua kính tại Mắt Việt.",
   keywords: ["Mắt Việt", "voucher", "kính mắt", "giảm giá", "khuyến mãi"],
   authors: [{ name: "Mắt Việt" }],
   openGraph: {
-    title: "Nhiệm Vụ Mắt Việt - Nhận Voucher Đến 300K",
-    description: "Hoàn thành 3 nhiệm vụ đơn giản và nhận voucher giảm giá đến 300.000đ",
+    title: "Chinh Phục Nhiệm Vụ – Rinh Voucher Khủng",
+    description: "Hoàn thành 3 nhiệm vụ theo dõi, nhận voucher đến 300.000đ tại Mắt Việt",
     type: "website",
     locale: "vi_VN",
     siteName: "Mắt Việt",
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
   },
   robots: {
     index: true,
     follow: true,
   },
-  generator: 'v0.dev'
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#FFD43B",
 }
 
 export default function RootLayout({
@@ -35,15 +55,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="vi" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </head>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
-      </body>
+    <html lang="vi" className={`${display.variable} ${body.variable} ${script.variable}`}>
+      <body className="font-body">{children}</body>
     </html>
   )
 }

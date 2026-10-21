@@ -19,7 +19,20 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        display: ["var(--font-display)", "Impact", "sans-serif"],
+        body: ["var(--font-body)", "system-ui", "sans-serif"],
+        script: ["var(--font-script)", "cursive"],
+      },
       colors: {
+        // Bảng màu chiến dịch (lấy từ poster)
+        sun: "#FFD43B",
+        butter: "#FFF4C9",
+        paper: "#FFFDF6",
+        navy: "#002169",
+        royal: "#3352C4",
+        tangerine: "#FF7A1A",
+        blush: "#FF8FA3",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
