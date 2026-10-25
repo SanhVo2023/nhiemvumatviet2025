@@ -4,17 +4,19 @@ A gamified mission-based reward application for Mắt Việt (Vietnamese Eyewear
 
 ## Overview
 
-This application allows customers to complete simple missions (follow on Zalo, Facebook, and leave Google Reviews) to earn vouchers worth up to 300,000 VND for purchases at Mắt Việt stores.
+Campaign "Chinh phục nhiệm vụ – Rinh voucher khủng" (26.10 – 30.10.2026). Customers scan the in-store QR, then follow Mắt Việt on Instagram, Facebook and the Zalo Mini App to earn vouchers worth up to 300,000 VND.
 
 ## Features
 
-- **3-Step Mission System**: Follow Zalo, Follow Facebook, Leave Google Review
+- **3 Missions** (same order as the poster): Follow Instagram, Follow Facebook, Open the Zalo Mini App
 - **Progressive Rewards**: Earn vouchers cumulatively as missions are completed
   - 0 missions: 50K voucher
   - 1 mission: +100K voucher
   - 2 missions: +200K voucher
   - 3 missions: +300K voucher
-- **Store-Specific QR Links**: Each store has a unique Google Review link via UTM parameters
+- **Store-Specific QR Links**: `utm_content` identifies the store; its name is shown in the header
+- **Focus-lens progress meter**: a camera-lens dial that turns and clears as missions are completed
+- **Progress survives reloads**: mission state is kept in `sessionStorage` while customers switch to Instagram/Facebook/Zalo
 - **Phone Verification**: Prevents duplicate entries by checking against Google Sheets
 - **Celebration Effects**: Confetti animations on reward collection
 - **Responsive Design**: Mobile-first design optimized for in-store use
@@ -64,17 +66,14 @@ npm start
 
 ## Configuration
 
-### Store Google Review Links
+### Missions, Vouchers and Stores
 
-Store-specific Google Review links are configured in `app/page.tsx` in the `googleReviewLinks` object:
+Campaign data lives in `lib/campaign.ts`:
 
-```typescript
-const googleReviewLinks: Record<string, string> = {
-  "304": "https://g.page/r/...",
-  "512": "https://g.page/r/...",
-  // Add more stores here
-}
-```
+- `MISSIONS` — platform links (Instagram, Facebook, Zalo Mini App) in display order
+- `TIERS` — voucher amounts and minimum order values
+- `STORES` — store code → display name (codes come from `utm_content`)
+- `CAMPAIGN_PERIOD`, `HOTLINE`, `VOUCHER_VALIDITY`
 
 ### UTM Parameters
 
@@ -86,30 +85,34 @@ https://yourdomain.com/?utm_content=304
 
 ### Google Form Integration
 
-Customer data is submitted to Google Forms. Update the form URL and entry IDs in the `handleRewardClick` function:
+Customer data is submitted to Google Forms. Update the form URL and entry IDs in the `handleRewardClick` function in `app/page.tsx`.
 
-```typescript
-formData.append("entry.1196289321", customerData.name)
-formData.append("entry.444309530", customerData.phone)
-// ...
+The mission status field keeps the same 3-slot format as the 2025 version so the sheet does not need changes:
+
 ```
+{utm_content}-{zaloMiniApp}-{facebook}-{instagram}     e.g. 101-2-2-2
+```
+
+Each slot is `0` (not started), `1` (opened, not confirmed) or `2` (done). The slots that used to hold Zalo and Google Review now hold Zalo Mini App and Instagram.
 
 ## Project Structure
 
 ```
 nhiemvumatviet2025/
 ├── app/
-│   ├── globals.css      # Global styles and animations
-│   ├── layout.tsx       # Root layout with metadata
-│   └── page.tsx         # Main application page
+│   ├── globals.css      # Campaign tokens, sunburst backdrop, ticket/button styles
+│   ├── layout.tsx       # Fonts (Anton, Be Vietnam Pro, Pacifico) + metadata
+│   ├── icon.png         # Favicon (penguin mascot)
+│   └── page.tsx         # Screen flow, mission state, Google Sheets/Form calls
 ├── components/
-│   ├── ui/              # shadcn/ui components
-│   ├── confetti-button.tsx
-│   └── theme-provider.tsx
+│   ├── mission/         # Form, mission and success screens, focus lens, ticket, mascots
+│   └── ui/              # shadcn/ui components
+├── lib/
+│   └── campaign.ts      # Missions, voucher tiers, stores, helpers
 ├── public/
-│   ├── banner.png       # Header banner
+│   ├── penguin.png      # Blue penguin mascot
+│   ├── chick.png        # Yellow chick mascot
 │   ├── logo.png         # Mắt Việt logo
-│   ├── mascot.png       # Success page mascot
 │   └── [platform icons]
 ├── styles/
 │   └── globals.css
@@ -128,11 +131,10 @@ http://localhost:3000/?dev
 
 ### Adding New Stores
 
-1. Get the Google Review link for the new store
-2. Add the store code and link to `googleReviewLinks` in `app/page.tsx`:
+Add the store code and display name to `STORES` in `lib/campaign.ts`, then print the QR with `?utm_content=NEW_CODE`:
 
 ```typescript
-"NEW_CODE": "https://g.page/r/NEW_LINK/review"
+"NEW_CODE": "AEON Mall Tân Phú",
 ```
 
 ## Deployment
